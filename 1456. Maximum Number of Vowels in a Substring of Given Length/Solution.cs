@@ -10,7 +10,7 @@ namespace LeetCode._1456._Maximum_Number_of_Vowels_in_a_Substring_of_Given_Lengt
     {
         public int MaxVowels(string s, int k)
         {
-            HashSet<char> vowels = ['a', 'e', 'i', 'o', 'u'];
+            var vowels = "aeiouAEIOU"; 
             var current = 0;
 
             for (int i = 0; i < k; i++)
