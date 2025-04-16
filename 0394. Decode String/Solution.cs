@@ -6,29 +6,27 @@ namespace LeetCode._0394._Decode_String
     {
         public string DecodeString(string s)
         {
-            Stack<char> stack = new();
+            Stack<string> stack = new();
             StringBuilder encoded_string = new();
-            StringBuilder time_repeated_string = new();
-            Stack<string> result = new();
-            int time_repeated = 0;
+            StringBuilder time_repeated = new();
 
             char left_bracket = '[';
             char right_bracket = ']';
 
-            foreach (var c in s)
+            foreach (char c in s)
             {
                 // Push all characters not ']' to the stack
                 if (!c.Equals(right_bracket))
                 {
-                    stack.Push(c);
+                    stack.Push(c.ToString());
                     continue;
                 }
 
                 // Pop all characters until we find the left bracket
-                while (stack.Count > 0 && !stack.Peek().Equals(left_bracket))
+                while (stack.Count > 0 && !stack.Peek().Equals(left_bracket.ToString()))
                 {
                     // Build encoded_string
-                    encoded_string.Append(stack.Pop());
+                    encoded_string.Insert(0, stack.Pop());
                 }
 
                 // Pop the left bracket
@@ -38,26 +36,33 @@ namespace LeetCode._0394._Decode_String
                 }
 
                 // Pop the digit(s) that represent the number of times to repeat
-                while (stack.Count > 0 && char.IsDigit(stack.Peek()))
+                while (stack.Count > 0 && int.TryParse(stack.Peek(), out var digit))
                 {
-                    time_repeated_string.Append(stack.Pop());
+                    time_repeated.Insert(0, stack.Pop());
                 }
 
-                if (int.TryParse(time_repeated_string.ToString(), out time_repeated))
+                // Push repeated encode string to stack
+                if (int.TryParse(time_repeated.ToString(), out var times))
                 {
-                    result.Push(string.Concat(Enumerable.Repeat(encoded_string.ToString(), time_repeated)));
+                    stack.Push(string.Concat(Enumerable.Repeat(encoded_string.ToString(), times)));
                 }
+                else
+                {
+                    stack.Push(encoded_string.ToString());
+                }
+
                 encoded_string.Clear();
-                time_repeated_string.Clear();
+                time_repeated.Clear();
             }
 
+            StringBuilder result = new();
             while (stack.Count > 0)
             {
                 // Pop all remain characters from the stack
-                result.Push(stack.Pop());
+                result.Insert(0, stack.Pop());
             }
 
-            return string.Join(string.Empty, result.Reverse());
+            return result.ToString();
         }
     }
 }
