@@ -6,7 +6,7 @@ namespace LeetCode._345._Reverse_Vowels_of_a_String
     {
         public string ReverseVowels(string s)
         {
-            List<char> vowels = ['a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U'];
+            var vowels = "aeiouAEIOU";
             if (s.Length == 0) return s;
             
             var sb = new StringBuilder(s);
